@@ -18,7 +18,7 @@ object Util {
         if (!isJdbcUrlValid(fields[3])) throw Exception("非法的 JDBC URL.")
         if (File(fields[8], fields[0]).exists()) throw Exception("要保存到的路径已存在.")
 
-        val port = try { (if (fields[4].isEmpty()) "0" else fields[4]).toInt() } catch (th: Throwable) { throw Exception("默认端口不是数字.") }
+        val port = try { (if (fields[4].isEmpty()) "80" else fields[4]).toInt() } catch (th: Throwable) { throw Exception("默认端口不是数字.") }
         val major = try { (if (fields[5].isEmpty()) "0" else fields[5]).toInt() } catch (th: Throwable) { throw Exception("主版本号不是数字.") }
         val minor = try { (if (fields[6].isEmpty()) "0" else fields[6]).toInt() } catch (th: Throwable) { throw Exception("次版本号不是数字.") }
         val driverName = if (fields[7].isEmpty()) fields[1] else fields[7]

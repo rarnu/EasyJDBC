@@ -1,0 +1,30 @@
+package {{package}}
+
+import {{package}}.resultset.{{prefix}}ResultSet
+import {{package}}.test.{{prefix}}TestRequset
+import com.rarnu.common.HttpMethod
+import com.rarnu.common.http
+import java.sql.SQLException
+
+class {{prefix}}IO(private val prop: Map<String, String>) {
+    fun internalExecuteQuery(sql: String) = try {
+        {{prefix}}ResultSet(internalRequest(sql))
+    } catch (th: Throwable) {
+        println("internalExecuteQuery error: $th")
+        null
+    } ?: throw SQLException("cannot parse ResultSet")
+
+    fun internalExecuteUpdate(sql: String) = try {
+        internalRequest(sql).toInt()
+    } catch (th: Throwable) {
+        println("internalExecuteUpdate error: $th")
+        -1
+    }
+
+    private fun internalRequest(sql: String): String {
+        if ({{prefix}}TestRequset.LOCAL_TEST) return {{prefix}}TestRequset.localTestInternalRequest(sql)
+        TODO("获取数据的代码写在此处，可以参考 SJTestRequset 内的返回数据格式要求")
+    }
+
+}
+

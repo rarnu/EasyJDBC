@@ -1,0 +1,62 @@
+package {{package}}.metadata
+
+import {{package}}.MAX_SIZE
+import java.sql.ResultSetMetaData
+import java.sql.SQLFeatureNotSupportedException
+import java.sql.Types
+
+class {{prefix}}ResultSetMetaData: ResultSetMetaData {
+
+    override fun getTableName(column: Int) = ""
+
+    override fun isNullable(column: Int) = ResultSetMetaData.columnNoNulls
+
+    override fun isDefinitelyWritable(column: Int) = false
+
+    override fun isSearchable(column: Int) = false
+
+    override fun getPrecision(column: Int) = MAX_SIZE
+
+    override fun isCaseSensitive(column: Int) = true
+
+    override fun getScale(column: Int) = 0
+
+    override fun getSchemaName(column: Int) = ""
+
+    override fun getColumnClassName(column: Int) = "java.lang.String"
+
+    override fun getCatalogName(column: Int) = ""
+
+    override fun getColumnType(column: Int) = Types.NVARCHAR
+
+    override fun isCurrency(column: Int) = false
+
+    override fun getColumnLabel(column: Int) = ""
+
+    override fun isWritable(column: Int) = false
+
+    override fun isReadOnly(column: Int) = true
+
+    override fun isSigned(column: Int) = false
+
+    override fun getColumnTypeName(column: Int) = "String"
+
+    override fun getColumnName(column: Int) = ""
+
+    override fun isAutoIncrement(column: Int) = false
+
+    override fun getColumnDisplaySize(column: Int) = MAX_SIZE
+
+    override fun getColumnCount() = 1
+
+    // ==== unsupported =========
+
+    override fun <T : Any?> unwrap(iface: Class<T>?): T {
+        throw SQLFeatureNotSupportedException("unwrap")
+    }
+
+    override fun isWrapperFor(iface: Class<*>?): Boolean {
+        throw SQLFeatureNotSupportedException("isWrapperFor")
+    }
+
+}

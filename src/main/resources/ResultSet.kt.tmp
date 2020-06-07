@@ -1,0 +1,748 @@
+package {{package}}.resultset
+
+import {{package}}.util.{{prefix}}ResultSetUtil
+import java.io.InputStream
+import java.io.Reader
+import java.math.BigDecimal
+import java.net.URL
+import java.sql.*
+import java.sql.Array
+import java.sql.Date
+import java.util.*
+
+class {{prefix}}ResultSet : ResultSet {
+
+    private var isClosed = false
+    private var position = -1
+    private lateinit var fields: List<String>
+    private lateinit var result: List<List<String>>
+
+    constructor(jsonString: String) {
+        {{prefix}}ResultSetUtil.jsonToResultData(jsonString) { f, l ->
+            fields = f
+            result = l
+        }
+    }
+
+    constructor(fields: List<String>, list: List<List<String>>) {
+        this.fields = fields
+        this.result = list
+    }
+
+    override fun findColumn(columnLabel: String) = fields.indexOf(columnLabel)
+
+    override fun getStatement(): Statement? = null
+
+    override fun getDate(columnIndex: Int): Date = Date.valueOf(result[position][columnIndex])
+
+    override fun getDate(columnLabel: String): Date = Date.valueOf(result[position][findColumn(columnLabel)])
+
+    override fun getDate(columnIndex: Int, cal: Calendar): Date = Date.valueOf(result[position][columnIndex])
+
+    override fun getDate(columnLabel: String, cal: Calendar): Date = Date.valueOf(result[position][findColumn(columnLabel)])
+
+    override fun getWarnings(): SQLWarning? = null
+
+    override fun beforeFirst() {
+        checkIfClosed()
+        position = -1
+    }
+
+    override fun close() {
+        isClosed = true
+    }
+
+    override fun getBoolean(columnIndex: Int): Boolean {
+        val r = result[position][columnIndex]
+        return if (r == "0" || r == "false") {
+            false
+        } else if (r == "1" || r == "true") {
+            true
+        } else {
+            throw SQLException("Don't know how to convert $r into a boolean.")
+        }
+    }
+
+    override fun getBoolean(columnLabel: String) = getBoolean(findColumn(columnLabel))
+
+    override fun isFirst(): Boolean {
+        checkIfClosed()
+        return position == 0
+    }
+
+    override fun getBigDecimal(columnIndex: Int, scale: Int): BigDecimal = BigDecimal(result[position][columnIndex]).setScale(scale)!!
+
+    override fun getBigDecimal(columnLabel: String, scale: Int): BigDecimal = BigDecimal(result[position][findColumn(columnLabel)]).setScale(scale)!!
+
+    override fun getBigDecimal(columnIndex: Int) = BigDecimal(result[position][columnIndex])
+
+    override fun getBigDecimal(columnLabel: String) = BigDecimal(result[position][findColumn(columnLabel)])
+
+    override fun isLast(): Boolean {
+        checkIfClosed()
+        return position == result.size - 1
+    }
+
+    override fun getTime(columnIndex: Int): Time = Time.valueOf(result[position][columnIndex])
+
+    override fun getTime(columnLabel: String): Time = Time.valueOf(result[position][findColumn(columnLabel)])
+
+    override fun getTime(columnIndex: Int, cal: Calendar): Time = Time.valueOf(result[position][columnIndex])
+
+    override fun getTime(columnLabel: String, cal: Calendar): Time = Time.valueOf(result[position][findColumn(columnLabel)])
+
+    override fun last(): Boolean {
+        position = result.size - 1
+        return result.isNotEmpty()
+    }
+
+    override fun isAfterLast(): Boolean {
+        checkIfClosed()
+        return position >= result.size
+    }
+
+    override fun relative(rows: Int): Boolean {
+        checkIfClosed()
+        return if (rows + position in 1 until result.size) {
+            position += rows
+            true
+        } else {
+            false
+        }
+    }
+
+    override fun absolute(row: Int): Boolean {
+        checkIfClosed()
+        return if (row in 1 until result.size) {
+            position = row
+            true
+        } else {
+            false
+        }
+    }
+
+    override fun next(): Boolean {
+        checkIfClosed()
+        return if (position < result.size - 1) {
+            position++
+            true
+        } else {
+            false
+        }
+    }
+
+    override fun getFloat(columnIndex: Int) = result[position][columnIndex].toFloat()
+
+    override fun getFloat(columnLabel: String) = result[position][findColumn(columnLabel)].toFloat()
+
+    override fun wasNull() = false
+
+    override fun getRow() = position + 1
+
+    override fun first(): Boolean {
+        checkIfClosed()
+        position = 0
+        return result.isNotEmpty()
+    }
+
+    override fun getURL(columnIndex: Int) = URL(result[position][columnIndex])
+
+    override fun getURL(columnLabel: String) = URL(result[position][findColumn(columnLabel)])
+
+    override fun getType() = ResultSet.TYPE_SCROLL_INSENSITIVE
+
+    override fun afterLast() {
+        checkIfClosed()
+        position = result.size
+    }
+
+    override fun getByte(columnIndex: Int): Byte {
+        val r = result[position][columnIndex]
+        return if (r.isNotEmpty()) r[0].toByte() else 0
+    }
+
+    override fun getByte(columnLabel: String) = getByte(findColumn(columnLabel))
+
+    override fun getString(columnIndex: Int) = result[position][columnIndex]
+
+    override fun getString(columnLabel: String) = result[position][findColumn(columnLabel)]
+
+    override fun <T : Any> getObject(columnIndex: Int, type: Class<T>): T? = null
+
+    override fun <T : Any> getObject(columnLabel: String, type: Class<T>): T? = null
+
+    override fun previous(): Boolean {
+        checkIfClosed()
+        return if (position > 1) {
+            position--
+            true
+        } else {
+            false
+        }
+    }
+
+    override fun getLong(columnIndex: Int) = result[position][columnIndex].toLong()
+
+    override fun getLong(columnLabel: String) = result[position][findColumn(columnLabel)].toLong()
+
+    override fun isClosed() = isClosed
+
+    override fun getNString(columnIndex: Int) = result[position][columnIndex]
+
+    override fun getNString(columnLabel: String) = result[position][findColumn(columnLabel)]
+
+    override fun getFetchSize() = result.size
+
+    override fun isBeforeFirst(): Boolean {
+        checkIfClosed()
+        return position < 0
+    }
+
+    override fun getShort(columnIndex: Int) = result[position][columnIndex].toShort()
+
+    override fun getShort(columnLabel: String) = result[position][findColumn(columnLabel)].toShort()
+
+    override fun getTimestamp(columnIndex: Int): Timestamp = Timestamp.valueOf(result[position][columnIndex])
+
+    override fun getTimestamp(columnLabel: String): Timestamp = Timestamp.valueOf(result[position][findColumn(columnLabel)])
+
+    override fun getTimestamp(columnIndex: Int, cal: Calendar): Timestamp = Timestamp.valueOf(result[position][columnIndex])
+
+    override fun getTimestamp(columnLabel: String, cal: Calendar): Timestamp = Timestamp.valueOf(result[position][findColumn(columnLabel)])
+
+    override fun getConcurrency() = ResultSet.CONCUR_READ_ONLY
+
+    override fun getBytes(columnIndex: Int) = result[position][columnIndex].toByteArray()
+
+    override fun getBytes(columnLabel: String) = result[position][findColumn(columnLabel)].toByteArray()
+
+    override fun getDouble(columnIndex: Int) = result[position][columnIndex].toDouble()
+
+    override fun getDouble(columnLabel: String) = result[position][findColumn(columnLabel)].toDouble()
+
+    override fun getInt(columnIndex: Int) = result[position][columnIndex].toInt()
+
+    override fun getInt(columnLabel: String) = result[position][findColumn(columnLabel)].toInt()
+
+    override fun clearWarnings() {
+        checkIfClosed()
+    }
+
+    override fun getFetchDirection() = ResultSet.TYPE_SCROLL_INSENSITIVE
+
+    private fun checkIfClosed() {
+        if (isClosed()) throw SQLException()
+    }
+
+    // ==== unsupported =========
+
+    override fun moveToCurrentRow() {
+        throw SQLFeatureNotSupportedException("moveToCurrentRow")
+    }
+
+    override fun insertRow() {
+        throw SQLFeatureNotSupportedException("insertRow")
+    }
+
+    override fun getUnicodeStream(columnIndex: Int): InputStream {
+        throw SQLFeatureNotSupportedException("getUnicodeStream")
+    }
+
+    override fun getUnicodeStream(columnLabel: String): InputStream {
+        throw SQLFeatureNotSupportedException("getUnicodeStream")
+    }
+
+    override fun getSQLXML(columnIndex: Int): SQLXML {
+        throw SQLFeatureNotSupportedException("getSQLXML")
+    }
+
+    override fun getSQLXML(columnLabel: String): SQLXML {
+        throw SQLFeatureNotSupportedException("getSQLXML")
+    }
+
+    override fun getRowId(columnIndex: Int): RowId {
+        throw SQLFeatureNotSupportedException("getRowId")
+    }
+
+    override fun getRowId(columnLabel: String): RowId {
+        throw SQLFeatureNotSupportedException("getRowId")
+    }
+
+    override fun getRef(columnIndex: Int): Ref {
+        throw SQLFeatureNotSupportedException("getRef")
+    }
+
+    override fun getRef(columnLabel: String): Ref {
+        throw SQLFeatureNotSupportedException("getRef")
+    }
+
+    override fun getObject(columnIndex: Int): Any {
+        throw SQLFeatureNotSupportedException("getObject")
+    }
+
+    override fun getObject(columnLabel: String): Any {
+        throw SQLFeatureNotSupportedException("getObject")
+    }
+
+    override fun getObject(columnIndex: Int, map: MutableMap<String, Class<*>>): Any {
+        throw SQLFeatureNotSupportedException("getObject")
+    }
+
+    override fun getObject(columnLabel: String, map: MutableMap<String, Class<*>>): Any {
+        throw SQLFeatureNotSupportedException("getObject")
+    }
+
+    override fun getNClob(columnIndex: Int): NClob {
+        throw SQLFeatureNotSupportedException("getNClob")
+    }
+
+    override fun getNClob(columnLabel: String): NClob {
+        throw SQLFeatureNotSupportedException("getNClob")
+    }
+
+    override fun getNCharacterStream(columnIndex: Int): Reader {
+        throw SQLFeatureNotSupportedException("getNCharacterStream")
+    }
+
+    override fun getNCharacterStream(columnLabel: String): Reader {
+        throw SQLFeatureNotSupportedException("getNCharacterStream")
+    }
+
+    override fun getMetaData(): ResultSetMetaData {
+        throw SQLFeatureNotSupportedException("getMetaData")
+    }
+
+    override fun getHoldability(): Int {
+        throw SQLFeatureNotSupportedException("getHoldability")
+    }
+
+    override fun getCursorName(): String {
+        throw SQLFeatureNotSupportedException("getCursorName")
+    }
+
+    override fun getClob(columnIndex: Int): Clob {
+        throw SQLFeatureNotSupportedException("getClob")
+    }
+
+    override fun getClob(columnLabel: String): Clob {
+        throw SQLFeatureNotSupportedException("getClob")
+    }
+
+    override fun getCharacterStream(columnIndex: Int): Reader {
+        throw SQLFeatureNotSupportedException("getCharacterStream")
+    }
+
+    override fun getCharacterStream(columnLabel: String): Reader {
+        throw SQLFeatureNotSupportedException("getCharacterStream")
+    }
+
+    override fun getBlob(columnIndex: Int): Blob {
+        throw SQLFeatureNotSupportedException("getBlob")
+    }
+
+    override fun getBlob(columnLabel: String): Blob {
+        throw SQLFeatureNotSupportedException("getBlob")
+    }
+
+    override fun getBinaryStream(columnIndex: Int): InputStream {
+        throw SQLFeatureNotSupportedException("getBinaryStream")
+    }
+
+    override fun getBinaryStream(columnLabel: String): InputStream {
+        throw SQLFeatureNotSupportedException("getBinaryStream")
+    }
+
+    override fun getAsciiStream(columnIndex: Int): InputStream {
+        throw SQLFeatureNotSupportedException("getAsciiStream")
+    }
+
+    override fun getAsciiStream(columnLabel: String): InputStream {
+        throw SQLFeatureNotSupportedException("getAsciiStream")
+    }
+
+    override fun getArray(columnIndex: Int): Array {
+        throw SQLFeatureNotSupportedException("getArray")
+    }
+
+    override fun getArray(columnLabel: String): Array {
+        throw SQLFeatureNotSupportedException("getArray")
+    }
+
+    override fun deleteRow() {
+        throw SQLFeatureNotSupportedException("deleteRow")
+    }
+
+    override fun cancelRowUpdates() {
+        throw SQLFeatureNotSupportedException("cancelRowUpdates")
+    }
+
+    override fun moveToInsertRow() {
+        throw SQLFeatureNotSupportedException("moveToInsertRow")
+    }
+
+    override fun refreshRow() {
+        throw SQLFeatureNotSupportedException("refreshRow")
+    }
+
+    override fun rowDeleted(): Boolean {
+        throw SQLFeatureNotSupportedException("rowDeleted")
+    }
+
+    override fun rowInserted(): Boolean {
+        throw SQLFeatureNotSupportedException("rowInserted")
+    }
+
+    override fun rowUpdated(): Boolean {
+        throw SQLFeatureNotSupportedException("rowUpdated")
+    }
+
+    override fun setFetchDirection(direction: Int) {
+        throw SQLFeatureNotSupportedException("setFetchDirection")
+    }
+
+    override fun setFetchSize(rows: Int) {
+        throw SQLFeatureNotSupportedException("setFetchSize")
+    }
+
+    override fun updateArray(columnIndex: Int, x: Array?) {
+        throw SQLFeatureNotSupportedException("updateArray")
+    }
+
+    override fun updateArray(columnLabel: String, x: Array?) {
+        throw SQLFeatureNotSupportedException("updateArray")
+    }
+
+    override fun updateAsciiStream(columnIndex: Int, x: InputStream?, length: Int) {
+        throw SQLFeatureNotSupportedException("updateAsciiStream")
+    }
+
+    override fun updateAsciiStream(columnLabel: String, x: InputStream?, length: Int) {
+        throw SQLFeatureNotSupportedException("updateAsciiStream")
+    }
+
+    override fun updateAsciiStream(columnIndex: Int, x: InputStream?, length: Long) {
+        throw SQLFeatureNotSupportedException("updateAsciiStream")
+    }
+
+    override fun updateAsciiStream(columnLabel: String, x: InputStream?, length: Long) {
+        throw SQLFeatureNotSupportedException("updateAsciiStream")
+    }
+
+    override fun updateAsciiStream(columnIndex: Int, x: InputStream?) {
+        throw SQLFeatureNotSupportedException("updateAsciiStream")
+    }
+
+    override fun updateAsciiStream(columnLabel: String, x: InputStream?) {
+        throw SQLFeatureNotSupportedException("updateAsciiStream")
+    }
+
+    override fun updateBigDecimal(columnIndex: Int, x: BigDecimal?) {
+        throw SQLFeatureNotSupportedException("updateBigDecimal")
+    }
+
+    override fun updateBigDecimal(columnLabel: String?, x: BigDecimal?) {
+        throw SQLFeatureNotSupportedException("updateBigDecimal")
+    }
+
+    override fun updateBinaryStream(columnIndex: Int, x: InputStream?, length: Int) {
+        throw SQLFeatureNotSupportedException("updateBinaryStream")
+    }
+
+    override fun updateBinaryStream(columnLabel: String, x: InputStream?, length: Int) {
+        throw SQLFeatureNotSupportedException("updateBinaryStream")
+    }
+
+    override fun updateBinaryStream(columnIndex: Int, x: InputStream?, length: Long) {
+        throw SQLFeatureNotSupportedException("updateBinaryStream")
+    }
+
+    override fun updateBinaryStream(columnLabel: String, x: InputStream?, length: Long) {
+        throw SQLFeatureNotSupportedException("updateBinaryStream")
+    }
+
+    override fun updateBinaryStream(columnIndex: Int, x: InputStream?) {
+        throw SQLFeatureNotSupportedException("updateBinaryStream")
+    }
+
+    override fun updateBinaryStream(columnLabel: String, x: InputStream?) {
+        throw SQLFeatureNotSupportedException("updateBinaryStream")
+    }
+
+    override fun updateBlob(columnIndex: Int, x: Blob?) {
+        throw SQLFeatureNotSupportedException("updateBlob")
+    }
+
+    override fun updateBlob(columnLabel: String, x: Blob?) {
+        throw SQLFeatureNotSupportedException("updateBlob")
+    }
+
+    override fun updateBlob(columnIndex: Int, inputStream: InputStream?, length: Long) {
+        throw SQLFeatureNotSupportedException("updateBlob")
+    }
+
+    override fun updateBlob(columnLabel: String, inputStream: InputStream?, length: Long) {
+        throw SQLFeatureNotSupportedException("updateBlob")
+    }
+
+    override fun updateBlob(columnIndex: Int, inputStream: InputStream?) {
+        throw SQLFeatureNotSupportedException("updateBlob")
+    }
+
+    override fun updateBlob(columnLabel: String, inputStream: InputStream?) {
+        throw SQLFeatureNotSupportedException("updateBlob")
+    }
+
+    override fun updateBoolean(columnIndex: Int, x: Boolean) {
+        throw SQLFeatureNotSupportedException("updateBoolean")
+    }
+
+    override fun updateBoolean(columnLabel: String, x: Boolean) {
+        throw SQLFeatureNotSupportedException("updateBoolean")
+    }
+
+    override fun updateByte(columnIndex: Int, x: Byte) {
+        throw SQLFeatureNotSupportedException("updateByte")
+    }
+
+    override fun updateByte(columnLabel: String, x: Byte) {
+        throw SQLFeatureNotSupportedException("updateByte")
+    }
+
+    override fun updateBytes(columnIndex: Int, x: ByteArray?) {
+        throw SQLFeatureNotSupportedException("updateBytes")
+    }
+
+    override fun updateBytes(columnLabel: String, x: ByteArray?) {
+        throw SQLFeatureNotSupportedException("updateBytes")
+    }
+
+    override fun updateCharacterStream(columnIndex: Int, x: Reader?, length: Int) {
+        throw SQLFeatureNotSupportedException("updateCharacterStream")
+    }
+
+    override fun updateCharacterStream(columnLabel: String, reader: Reader?, length: Int) {
+        throw SQLFeatureNotSupportedException("updateCharacterStream")
+    }
+
+    override fun updateCharacterStream(columnIndex: Int, x: Reader?, length: Long) {
+        throw SQLFeatureNotSupportedException("updateCharacterStream")
+    }
+
+    override fun updateCharacterStream(columnLabel: String, reader: Reader?, length: Long) {
+        throw SQLFeatureNotSupportedException("updateCharacterStream")
+    }
+
+    override fun updateCharacterStream(columnIndex: Int, x: Reader?) {
+        throw SQLFeatureNotSupportedException("updateCharacterStream")
+    }
+
+    override fun updateCharacterStream(columnLabel: String, reader: Reader?) {
+        throw SQLFeatureNotSupportedException("updateCharacterStream")
+    }
+
+    override fun updateFloat(columnIndex: Int, x: Float) {
+        throw SQLFeatureNotSupportedException("updateFloat")
+    }
+
+    override fun updateFloat(columnLabel: String, x: Float) {
+        throw SQLFeatureNotSupportedException("updateFloat")
+    }
+
+    override fun updateDouble(columnIndex: Int, x: Double) {
+        throw SQLFeatureNotSupportedException("updateDouble")
+    }
+
+    override fun updateDouble(columnLabel: String, x: Double) {
+        throw SQLFeatureNotSupportedException("updateDouble")
+    }
+
+    override fun updateDate(columnIndex: Int, x: Date?) {
+        throw SQLFeatureNotSupportedException("updateDate")
+    }
+
+    override fun updateDate(columnLabel: String, x: Date?) {
+        throw SQLFeatureNotSupportedException("updateDate")
+    }
+
+    override fun updateClob(columnIndex: Int, x: Clob?) {
+        throw SQLFeatureNotSupportedException("updateClob")
+    }
+
+    override fun updateClob(columnLabel: String, x: Clob?) {
+        throw SQLFeatureNotSupportedException("updateClob")
+    }
+
+    override fun updateClob(columnIndex: Int, reader: Reader?, length: Long) {
+        throw SQLFeatureNotSupportedException("updateClob")
+    }
+
+    override fun updateClob(columnLabel: String, reader: Reader?, length: Long) {
+        throw SQLFeatureNotSupportedException("updateClob")
+    }
+
+    override fun updateClob(columnIndex: Int, reader: Reader?) {
+        throw SQLFeatureNotSupportedException("updateClob")
+    }
+
+    override fun updateClob(columnLabel: String, reader: Reader?) {
+        throw SQLFeatureNotSupportedException("updateClob")
+    }
+
+    override fun updateInt(columnIndex: Int, x: Int) {
+        throw SQLFeatureNotSupportedException("updateInt")
+    }
+
+    override fun updateInt(columnLabel: String, x: Int) {
+        throw SQLFeatureNotSupportedException("updateInt")
+    }
+
+    override fun updateLong(columnIndex: Int, x: Long) {
+        throw SQLFeatureNotSupportedException("updateLong")
+    }
+
+    override fun updateLong(columnLabel: String, x: Long) {
+        throw SQLFeatureNotSupportedException("updateLong")
+    }
+
+    override fun updateNCharacterStream(columnIndex: Int, x: Reader?, length: Long) {
+        throw SQLFeatureNotSupportedException("updateNCharacterStream")
+    }
+
+    override fun updateNCharacterStream(columnLabel: String, reader: Reader?, length: Long) {
+        throw SQLFeatureNotSupportedException("updateNCharacterStream")
+    }
+
+    override fun updateNCharacterStream(columnIndex: Int, x: Reader?) {
+        throw SQLFeatureNotSupportedException("updateNCharacterStream")
+    }
+
+    override fun updateNCharacterStream(columnLabel: String, reader: Reader?) {
+        throw SQLFeatureNotSupportedException("updateNCharacterStream")
+    }
+
+    override fun updateNClob(columnIndex: Int, nClob: NClob?) {
+        throw SQLFeatureNotSupportedException("updateNClob")
+    }
+
+    override fun updateNClob(columnLabel: String, nClob: NClob?) {
+        throw SQLFeatureNotSupportedException("updateNClob")
+    }
+
+    override fun updateNClob(columnIndex: Int, reader: Reader?, length: Long) {
+        throw SQLFeatureNotSupportedException("updateNClob")
+    }
+
+    override fun updateNClob(columnLabel: String, reader: Reader?, length: Long) {
+        throw SQLFeatureNotSupportedException("updateNClob")
+    }
+
+    override fun updateNClob(columnIndex: Int, reader: Reader?) {
+        throw SQLFeatureNotSupportedException("updateNClob")
+    }
+
+    override fun updateNClob(columnLabel: String, reader: Reader?) {
+        throw SQLFeatureNotSupportedException("updateNClob")
+    }
+
+    override fun updateNull(columnIndex: Int) {
+        throw SQLFeatureNotSupportedException("updateNull")
+    }
+
+    override fun updateNull(columnLabel: String) {
+        throw SQLFeatureNotSupportedException("updateNull")
+    }
+
+    override fun updateNString(columnIndex: Int, nString: String?) {
+        throw SQLFeatureNotSupportedException("updateNString")
+    }
+
+    override fun updateNString(columnLabel: String, nString: String?) {
+        throw SQLFeatureNotSupportedException("updateNString")
+    }
+
+    override fun updateRow() {
+        throw SQLFeatureNotSupportedException("updateRow")
+    }
+
+    override fun updateRowId(columnIndex: Int, x: RowId?) {
+        throw SQLFeatureNotSupportedException("updateRowId")
+    }
+
+    override fun updateRowId(columnLabel: String, x: RowId?) {
+        throw SQLFeatureNotSupportedException("updateRowId")
+    }
+
+    override fun updateSQLXML(columnIndex: Int, xmlObject: SQLXML?) {
+        throw SQLFeatureNotSupportedException("updateSQLXML")
+    }
+
+    override fun updateSQLXML(columnLabel: String, xmlObject: SQLXML?) {
+        throw SQLFeatureNotSupportedException("updateSQLXML")
+    }
+
+    override fun updateShort(columnIndex: Int, x: Short) {
+        throw SQLFeatureNotSupportedException("updateShort")
+    }
+
+    override fun updateShort(columnLabel: String, x: Short) {
+        throw SQLFeatureNotSupportedException("updateShort")
+    }
+
+    override fun updateString(columnIndex: Int, x: String?) {
+        throw SQLFeatureNotSupportedException("updateString")
+    }
+
+    override fun updateString(columnLabel: String, x: String?) {
+        throw SQLFeatureNotSupportedException("updateString")
+    }
+
+    override fun updateTime(columnIndex: Int, x: Time?) {
+        throw SQLFeatureNotSupportedException("updateTime")
+    }
+
+    override fun updateTime(columnLabel: String, x: Time?) {
+        throw SQLFeatureNotSupportedException("updateTime")
+    }
+
+
+    override fun updateTimestamp(columnIndex: Int, x: Timestamp?) {
+        throw SQLFeatureNotSupportedException("updateTimestamp")
+    }
+
+    override fun updateTimestamp(columnLabel: String, x: Timestamp?) {
+        throw SQLFeatureNotSupportedException("updateTimestamp")
+    }
+
+    override fun updateRef(columnIndex: Int, x: Ref?) {
+        throw SQLFeatureNotSupportedException("updateRef")
+    }
+
+    override fun updateRef(columnLabel: String, x: Ref?) {
+        throw SQLFeatureNotSupportedException("updateRef")
+    }
+
+    override fun updateObject(columnIndex: Int, x: Any?, scaleOrLength: Int) {
+        throw SQLFeatureNotSupportedException("updateObject")
+    }
+
+    override fun updateObject(columnIndex: Int, x: Any?) {
+        throw SQLFeatureNotSupportedException("updateObject")
+    }
+
+    override fun updateObject(columnLabel: String, x: Any?, scaleOrLength: Int) {
+        throw SQLFeatureNotSupportedException("updateObject")
+    }
+
+    override fun updateObject(columnLabel: String, x: Any?) {
+        throw SQLFeatureNotSupportedException("updateObject")
+    }
+
+    override fun isWrapperFor(iface: Class<*>): Boolean {
+        throw SQLFeatureNotSupportedException("isWrapperFor")
+    }
+
+    override fun <T : Any> unwrap(iface: Class<T>): T? {
+        throw SQLFeatureNotSupportedException("unwrap")
+    }
+
+}

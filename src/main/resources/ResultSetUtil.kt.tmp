@@ -1,0 +1,20 @@
+package {{package}}.util
+
+import com.rarnu.common.forEach
+import org.json.JSONArray
+import java.sql.SQLException
+
+object {{prefix}}ResultSetUtil {
+    fun jsonToResultData(jsonString: String, callback:(fields: List<String>, data: List<List<String>>) -> Unit) {
+        val fields = getFields(jsonString)
+        val data = mutableListOf<List<String>>()
+        JSONArray(jsonString).forEach { _, obj -> data.add(fields.map { obj.get(it).toString() }) }
+        callback(fields, data)
+    }
+
+    private fun getFields(jsonString: String) = try {
+        JSONArray(jsonString).run { if (length() > 0) getJSONObject(0).keySet().toList() else listOf() }
+    } catch (th: Throwable) {
+        throw SQLException("Cannot get result fields.")
+    }
+}

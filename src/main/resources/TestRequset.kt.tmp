@@ -1,0 +1,13 @@
+package {{package}}.test
+
+import org.jetbrains.annotations.TestOnly
+
+object {{prefix}}TestRequset {
+
+    var LOCAL_TEST = false
+
+    private val SAMPLEDATA = """[{"id":1, "name":"test1", "age":10},{"id":2, "name":"test2", "age":20},{"id":3, "name":"test3", "age":30},{"id":4, "name":"test4", "age":40},{"id":5, "name":"test5", "age":50}]"""
+
+    @TestOnly
+    fun localTestInternalRequest(sql: String) = if (sql.contains("select ")) SAMPLEDATA else "1"
+}

@@ -1,0 +1,28 @@
+import {{package}}.PROP_SCHEMA
+import {{package}}.test.{{prefix}}TestRequset
+import org.junit.Test
+import java.sql.DriverManager
+import java.util.*
+
+class Test {
+
+    @Test
+    fun doTest() {
+        {{prefix}}TestRequset.LOCAL_TEST = true
+        Class.forName("{{package}}.{{prefix}}Driver")
+        DriverManager.getConnection("jdbc:{{jdbc}}://0.0.0.0/sampledb", Properties().apply { setProperty(PROP_SCHEMA, "http") }).use { conn ->
+            conn.prepareStatement("select * from Data").use { stmt ->
+                stmt.executeQuery().use { result ->
+                    while (result.next()) {
+                        println(result.getString("name"))
+                    }
+                }
+            }
+            conn.prepareStatement("insert into Data(name) values (?)").use { stmt ->
+                stmt.setString(1, "23333")
+                println(stmt.executeUpdate())
+            }
+
+        }
+    }
+}

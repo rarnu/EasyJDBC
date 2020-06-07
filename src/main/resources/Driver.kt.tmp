@@ -1,0 +1,40 @@
+package {{package}}
+
+import {{package}}.util.{{prefix}}DriverUtil
+import java.lang.Exception
+import java.sql.*
+import java.util.*
+import java.util.logging.Logger
+
+class {{prefix}}Driver: Driver {
+
+    companion object {
+        init {
+            try {
+                DriverManager.registerDriver({{prefix}}Driver())
+            } catch (e: Exception) {
+                throw RuntimeException("Can't register $DRIVER_NAME", e)
+            }
+        }
+    }
+
+    override fun getMinorVersion() = MINOR_VERSION
+
+    override fun getParentLogger(): Logger {
+        throw SQLFeatureNotSupportedException("getParentLogger")
+    }
+
+    override fun getPropertyInfo(url: String, info: Properties?) = arrayOf<DriverPropertyInfo>()
+
+    override fun jdbcCompliant() = false
+
+    override fun acceptsURL(url: String) = url.toLowerCase().startsWith(JDBC_URL)
+
+    override fun connect(url: String, info: Properties?): Connection {
+        if (!acceptsURL(url)) throw SQLException("Invalid URL: $url")
+        val props = {{prefix}}DriverUtil.parseMergeProperties(url.replace("jdbc:", ""), info)
+        return {{prefix}}Connection(props)
+    }
+
+    override fun getMajorVersion() = MAJOR_VERSION
+}

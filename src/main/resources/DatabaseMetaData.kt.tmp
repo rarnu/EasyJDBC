@@ -1,0 +1,711 @@
+package {{package}}.metadata
+
+import {{package}}.DRIVER_NAME
+import {{package}}.MAJOR_VERSION
+import {{package}}.MINOR_VERSION
+import java.sql.*
+
+class {{prefix}}DatabaseMetaData: DatabaseMetaData {
+
+    override fun getDriverMinorVersion() = MINOR_VERSION
+
+    override fun getDriverMajorVersion() = MAJOR_VERSION
+
+    override fun getDriverName() = DRIVER_NAME
+
+    // ==== unsupported =========
+
+    override fun supportsUnion(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsUnion")
+    }
+
+    override fun generatedKeyAlwaysReturned(): Boolean {
+        throw SQLFeatureNotSupportedException("generatedKeyAlwaysReturned")
+    }
+
+    override fun getPseudoColumns(catalog: String?, schemaPattern: String?, tableNamePattern: String?, columnNamePattern: String?): ResultSet {
+        throw SQLFeatureNotSupportedException("getPseudoColumns")
+    }
+
+    override fun getFunctionColumns(catalog: String?, schemaPattern: String?, functionNamePattern: String?, columnNamePattern: String?): ResultSet {
+        throw SQLFeatureNotSupportedException("getFunctionColumns")
+    }
+
+    override fun getFunctions(catalog: String?, schemaPattern: String?, functionNamePattern: String?): ResultSet {
+        throw SQLFeatureNotSupportedException("getFunctions")
+    }
+
+    override fun getClientInfoProperties(): ResultSet {
+        throw SQLFeatureNotSupportedException("getClientInfoProperties")
+    }
+
+    override fun autoCommitFailureClosesAllResultSets(): Boolean {
+        throw SQLFeatureNotSupportedException("autoCommitFailureClosesAllResultSets")
+    }
+
+    override fun supportsStoredFunctionsUsingCallSyntax(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsStoredFunctionsUsingCallSyntax")
+    }
+
+    override fun getSchemas(catalog: String?, schemaPattern: String?): ResultSet {
+        throw SQLFeatureNotSupportedException("getSchemas")
+    }
+
+    override fun getRowIdLifetime(): RowIdLifetime {
+        throw SQLFeatureNotSupportedException("getRowIdLifetime")
+    }
+
+    override fun supportsStatementPooling(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsStatementPooling")
+    }
+
+    override fun locatorsUpdateCopy(): Boolean {
+        throw SQLFeatureNotSupportedException("locatorsUpdateCopy")
+    }
+
+    override fun getSQLStateType(): Int {
+        throw SQLFeatureNotSupportedException("getSQLStateType")
+    }
+
+    override fun getJDBCMinorVersion(): Int {
+        throw SQLFeatureNotSupportedException("getJDBCMinorVersion")
+    }
+
+    override fun getJDBCMajorVersion(): Int {
+        throw SQLFeatureNotSupportedException("getJDBCMajorVersion")
+    }
+
+    override fun getDatabaseMinorVersion(): Int {
+        throw SQLFeatureNotSupportedException("getDatabaseMinorVersion")
+    }
+
+    override fun getDatabaseMajorVersion(): Int {
+        throw SQLFeatureNotSupportedException("getDatabaseMajorVersion")
+    }
+
+    override fun getResultSetHoldability(): Int {
+        throw SQLFeatureNotSupportedException("getResultSetHoldability")
+    }
+
+    override fun supportsResultSetHoldability(holdability: Int): Boolean {
+        throw SQLFeatureNotSupportedException("supportsResultSetHoldability")
+    }
+
+    override fun getAttributes(catalog: String?, schemaPattern: String?, typeNamePattern: String?, attributeNamePattern: String?): ResultSet {
+        throw SQLFeatureNotSupportedException("getAttributes")
+    }
+
+    override fun getSuperTables(catalog: String?, schemaPattern: String?, tableNamePattern: String?): ResultSet {
+        throw SQLFeatureNotSupportedException("getSuperTables")
+    }
+
+    override fun getSuperTypes(catalog: String?, schemaPattern: String?, typeNamePattern: String?): ResultSet {
+        throw SQLFeatureNotSupportedException("getSuperTypes")
+    }
+
+    override fun supportsGetGeneratedKeys(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsGetGeneratedKeys")
+    }
+
+    override fun supportsMultipleOpenResults(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsMultipleOpenResults")
+    }
+
+    override fun supportsNamedParameters(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsNamedParameters")
+    }
+
+    override fun supportsSavepoints(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsSavepoints")
+    }
+
+    override fun getConnection(): Connection {
+        throw SQLFeatureNotSupportedException("getConnection")
+    }
+
+    override fun getUDTs(catalog: String?, schemaPattern: String?, typeNamePattern: String?, types: IntArray?): ResultSet {
+        throw SQLFeatureNotSupportedException("getUDTs")
+    }
+
+    override fun supportsBatchUpdates(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsBatchUpdates")
+    }
+
+    override fun insertsAreDetected(type: Int): Boolean {
+        throw SQLFeatureNotSupportedException("insertsAreDetected")
+    }
+
+    override fun deletesAreDetected(type: Int): Boolean {
+        throw SQLFeatureNotSupportedException("deletesAreDetected")
+    }
+
+    override fun updatesAreDetected(type: Int): Boolean {
+        throw SQLFeatureNotSupportedException("updatesAreDetected")
+    }
+
+    override fun othersInsertsAreVisible(type: Int): Boolean {
+        throw SQLFeatureNotSupportedException("othersInsertsAreVisible")
+    }
+
+    override fun othersDeletesAreVisible(type: Int): Boolean {
+        throw SQLFeatureNotSupportedException("othersDeletesAreVisible")
+    }
+
+    override fun othersUpdatesAreVisible(type: Int): Boolean {
+        throw SQLFeatureNotSupportedException("othersUpdatesAreVisible")
+    }
+
+    override fun ownInsertsAreVisible(type: Int): Boolean {
+        throw SQLFeatureNotSupportedException("ownInsertsAreVisible")
+    }
+
+    override fun ownDeletesAreVisible(type: Int): Boolean {
+        throw SQLFeatureNotSupportedException("ownDeletesAreVisible")
+    }
+
+    override fun ownUpdatesAreVisible(type: Int): Boolean {
+        throw SQLFeatureNotSupportedException("ownUpdatesAreVisible")
+    }
+
+    override fun supportsResultSetConcurrency(type: Int, concurrency: Int): Boolean {
+        throw SQLFeatureNotSupportedException("supportsResultSetConcurrency")
+    }
+
+    override fun supportsResultSetType(type: Int): Boolean {
+        throw SQLFeatureNotSupportedException("supportsResultSetType")
+    }
+
+    override fun getIndexInfo(catalog: String?, schema: String?, table: String?, unique: Boolean, approximate: Boolean): ResultSet {
+        throw SQLFeatureNotSupportedException("getIndexInfo")
+    }
+
+    override fun getTypeInfo(): ResultSet {
+        throw SQLFeatureNotSupportedException("getTypeInfo")
+    }
+
+    override fun getCrossReference(parentCatalog: String?, parentSchema: String?, parentTable: String?, foreignCatalog: String?, foreignSchema: String?, foreignTable: String?): ResultSet {
+        throw SQLFeatureNotSupportedException("getCrossReference")
+    }
+
+    override fun getExportedKeys(catalog: String?, schema: String?, table: String?): ResultSet {
+        throw SQLFeatureNotSupportedException("getExportedKeys")
+    }
+
+    override fun getImportedKeys(catalog: String?, schema: String?, table: String?): ResultSet {
+        throw SQLFeatureNotSupportedException("getImportedKeys")
+    }
+
+    override fun getPrimaryKeys(catalog: String?, schema: String?, table: String?): ResultSet {
+        throw SQLFeatureNotSupportedException("getPrimaryKeys")
+    }
+
+    override fun getVersionColumns(catalog: String?, schema: String?, table: String?): ResultSet {
+        throw SQLFeatureNotSupportedException("getVersionColumns")
+    }
+
+    override fun getBestRowIdentifier(catalog: String?, schema: String?, table: String?, scope: Int, nullable: Boolean): ResultSet {
+        throw SQLFeatureNotSupportedException("getBestRowIdentifier")
+    }
+
+    override fun getTablePrivileges(catalog: String?, schemaPattern: String?, tableNamePattern: String?): ResultSet {
+        throw SQLFeatureNotSupportedException("getTablePrivileges")
+    }
+
+    override fun getColumnPrivileges(catalog: String?, schema: String?, table: String?, columnNamePattern: String?): ResultSet {
+        throw SQLFeatureNotSupportedException("getColumnPrivileges")
+    }
+
+    override fun getColumns(catalog: String?, schemaPattern: String?, tableNamePattern: String?, columnNamePattern: String?): ResultSet {
+        throw SQLFeatureNotSupportedException("getColumns")
+    }
+
+    override fun getTableTypes(): ResultSet {
+        throw SQLFeatureNotSupportedException("getTableTypes")
+    }
+
+    override fun getCatalogs(): ResultSet {
+        throw SQLFeatureNotSupportedException("getCatalogs")
+    }
+
+    override fun getSchemas(): ResultSet {
+        throw SQLFeatureNotSupportedException("getSchemas")
+    }
+
+    override fun getTables(catalog: String?, schemaPattern: String?, tableNamePattern: String?, types: Array<out String>?): ResultSet {
+        throw SQLFeatureNotSupportedException("getTables")
+    }
+
+    override fun getProcedureColumns(catalog: String?, schemaPattern: String?, procedureNamePattern: String?, columnNamePattern: String?): ResultSet {
+        throw SQLFeatureNotSupportedException("getProcedureColumns")
+    }
+
+    override fun getProcedures(catalog: String?, schemaPattern: String?, procedureNamePattern: String?): ResultSet {
+        throw SQLFeatureNotSupportedException("dataDefinitionIgnoredInTransactions")
+    }
+
+    override fun dataDefinitionIgnoredInTransactions(): Boolean {
+        throw SQLFeatureNotSupportedException("dataDefinitionIgnoredInTransactions")
+    }
+
+    override fun dataDefinitionCausesTransactionCommit(): Boolean {
+        throw SQLFeatureNotSupportedException("dataDefinitionCausesTransactionCommit")
+    }
+
+    override fun supportsDataManipulationTransactionsOnly(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsDataManipulationTransactionsOnly")
+    }
+
+    override fun supportsDataDefinitionAndDataManipulationTransactions(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsDataDefinitionAndDataManipulationTransactions")
+    }
+
+    override fun supportsTransactionIsolationLevel(level: Int): Boolean {
+        throw SQLFeatureNotSupportedException("supportsTransactionIsolationLevel")
+    }
+
+    override fun supportsTransactions(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsTransactions")
+    }
+
+    override fun getDefaultTransactionIsolation(): Int {
+        throw SQLFeatureNotSupportedException("getDefaultTransactionIsolation")
+    }
+
+    override fun getMaxUserNameLength(): Int {
+        throw SQLFeatureNotSupportedException("getMaxUserNameLength")
+    }
+
+    override fun getMaxTablesInSelect(): Int {
+        throw SQLFeatureNotSupportedException("getMaxTablesInSelect")
+    }
+
+    override fun getMaxTableNameLength(): Int {
+        throw SQLFeatureNotSupportedException("getMaxTableNameLength")
+    }
+
+    override fun getMaxStatements(): Int {
+        throw SQLFeatureNotSupportedException("getMaxStatements")
+    }
+
+    override fun getMaxStatementLength(): Int {
+        throw SQLFeatureNotSupportedException("getMaxStatementLength")
+    }
+
+    override fun doesMaxRowSizeIncludeBlobs(): Boolean {
+        throw SQLFeatureNotSupportedException("doesMaxRowSizeIncludeBlobs")
+    }
+
+    override fun getMaxRowSize(): Int {
+        throw SQLFeatureNotSupportedException("getMaxRowSize")
+    }
+
+    override fun getMaxCatalogNameLength(): Int {
+        throw SQLFeatureNotSupportedException("getMaxCatalogNameLength")
+    }
+
+    override fun getMaxProcedureNameLength(): Int {
+        throw SQLFeatureNotSupportedException("getMaxProcedureNameLength")
+    }
+
+    override fun getMaxSchemaNameLength(): Int {
+        throw SQLFeatureNotSupportedException("getMaxSchemaNameLength")
+    }
+
+    override fun getMaxIndexLength(): Int {
+        throw SQLFeatureNotSupportedException("getMaxIndexLength")
+    }
+
+    override fun getMaxCursorNameLength(): Int {
+        throw SQLFeatureNotSupportedException("getMaxCursorNameLength")
+    }
+
+    override fun getMaxConnections(): Int {
+        throw SQLFeatureNotSupportedException("getMaxConnections")
+    }
+
+    override fun getMaxColumnsInTable(): Int {
+        throw SQLFeatureNotSupportedException("getMaxColumnsInTable")
+    }
+
+    override fun getMaxColumnsInSelect(): Int {
+        throw SQLFeatureNotSupportedException("getMaxColumnsInSelect")
+    }
+
+    override fun getMaxColumnsInOrderBy(): Int {
+        throw SQLFeatureNotSupportedException("getMaxColumnsInOrderBy")
+    }
+
+    override fun getMaxColumnsInIndex(): Int {
+        throw SQLFeatureNotSupportedException("getMaxColumnsInIndex")
+    }
+
+    override fun getMaxColumnsInGroupBy(): Int {
+        throw SQLFeatureNotSupportedException("getMaxColumnsInGroupBy")
+    }
+
+    override fun getMaxColumnNameLength(): Int {
+        throw SQLFeatureNotSupportedException("getMaxColumnNameLength")
+    }
+
+    override fun getMaxCharLiteralLength(): Int {
+        throw SQLFeatureNotSupportedException("getMaxCharLiteralLength")
+    }
+
+    override fun getMaxBinaryLiteralLength(): Int {
+        throw SQLFeatureNotSupportedException("getMaxBinaryLiteralLength")
+    }
+
+    override fun supportsOpenStatementsAcrossRollback(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsOpenStatementsAcrossRollback")
+    }
+
+    override fun supportsOpenStatementsAcrossCommit(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsOpenStatementsAcrossCommit")
+    }
+
+    override fun supportsOpenCursorsAcrossRollback(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsOpenCursorsAcrossRollback")
+    }
+
+    override fun supportsOpenCursorsAcrossCommit(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsOpenCursorsAcrossCommit")
+    }
+
+    override fun supportsUnionAll(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsUnionAll")
+    }
+
+    override fun supportsCorrelatedSubqueries(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsCorrelatedSubqueries")
+    }
+
+    override fun supportsSubqueriesInQuantifieds(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsSubqueriesInQuantifieds")
+    }
+
+    override fun supportsSubqueriesInIns(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsSubqueriesInIns")
+    }
+
+    override fun supportsSubqueriesInExists(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsSubqueriesInExists")
+    }
+
+    override fun supportsSubqueriesInComparisons(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsSubqueriesInComparisons")
+    }
+
+    override fun supportsStoredProcedures(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsStoredProcedures")
+    }
+
+    override fun supportsSelectForUpdate(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsSelectForUpdate")
+    }
+
+    override fun supportsPositionedUpdate(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsPositionedUpdate")
+    }
+
+    override fun supportsPositionedDelete(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsPositionedDelete")
+    }
+
+    override fun supportsCatalogsInPrivilegeDefinitions(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsCatalogsInPrivilegeDefinitions")
+    }
+
+    override fun supportsCatalogsInIndexDefinitions(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsCatalogsInIndexDefinitions")
+    }
+
+    override fun supportsCatalogsInTableDefinitions(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsCatalogsInTableDefinitions")
+    }
+
+    override fun supportsCatalogsInProcedureCalls(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsCatalogsInProcedureCalls")
+    }
+
+    override fun supportsCatalogsInDataManipulation(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsCatalogsInDataManipulation")
+    }
+
+    override fun supportsSchemasInPrivilegeDefinitions(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsSchemasInPrivilegeDefinitions")
+    }
+
+    override fun supportsSchemasInIndexDefinitions(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsSchemasInIndexDefinitions")
+    }
+
+    override fun supportsSchemasInTableDefinitions(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsSchemasInTableDefinitions")
+    }
+
+    override fun supportsSchemasInProcedureCalls(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsSchemasInProcedureCalls")
+    }
+
+    override fun supportsSchemasInDataManipulation(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsSchemasInDataManipulation")
+    }
+
+    override fun getCatalogSeparator(): String {
+        throw SQLFeatureNotSupportedException("getCatalogSeparator")
+    }
+
+    override fun isCatalogAtStart(): Boolean {
+        throw SQLFeatureNotSupportedException("isCatalogAtStart")
+    }
+
+    override fun getCatalogTerm(): String {
+        throw SQLFeatureNotSupportedException("getCatalogTerm")
+    }
+
+    override fun getProcedureTerm(): String {
+        throw SQLFeatureNotSupportedException("getProcedureTerm")
+    }
+
+    override fun getSchemaTerm(): String {
+        throw SQLFeatureNotSupportedException("getSchemaTerm")
+    }
+
+    override fun supportsLimitedOuterJoins(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsLimitedOuterJoins")
+    }
+
+    override fun supportsFullOuterJoins(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsFullOuterJoins")
+    }
+
+    override fun supportsOuterJoins(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsOuterJoins")
+    }
+
+    override fun supportsIntegrityEnhancementFacility(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsIntegrityEnhancementFacility")
+    }
+
+    override fun supportsANSI92FullSQL(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsANSI92FullSQL")
+    }
+
+    override fun supportsANSI92IntermediateSQL(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsANSI92IntermediateSQL")
+    }
+
+    override fun supportsANSI92EntryLevelSQL(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsANSI92EntryLevelSQL")
+    }
+
+    override fun supportsExtendedSQLGrammar(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsExtendedSQLGrammar")
+    }
+
+    override fun supportsCoreSQLGrammar(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsCoreSQLGrammar")
+    }
+
+    override fun supportsMinimumSQLGrammar(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsMinimumSQLGrammar")
+    }
+
+    override fun supportsNonNullableColumns(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsNonNullableColumns")
+    }
+
+    override fun supportsMultipleTransactions(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsMultipleTransactions")
+    }
+
+    override fun supportsMultipleResultSets(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsMultipleResultSets")
+    }
+
+    override fun supportsLikeEscapeClause(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsLikeEscapeClause")
+    }
+
+    override fun supportsGroupByBeyondSelect(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsGroupByBeyondSelect")
+    }
+
+    override fun supportsGroupByUnrelated(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsGroupByUnrelated")
+    }
+
+    override fun supportsGroupBy(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsGroupBy")
+    }
+
+    override fun supportsOrderByUnrelated(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsOrderByUnrelated")
+    }
+
+    override fun supportsExpressionsInOrderBy(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsExpressionsInOrderBy")
+    }
+
+    override fun supportsDifferentTableCorrelationNames(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsDifferentTableCorrelationNames")
+    }
+
+    override fun supportsTableCorrelationNames(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsTableCorrelationNames")
+    }
+
+    override fun supportsConvert(fromType: Int, toType: Int): Boolean {
+        throw SQLFeatureNotSupportedException("supportsConvert")
+    }
+
+    override fun supportsConvert(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsConvert")
+    }
+
+    override fun nullPlusNonNullIsNull(): Boolean {
+        throw SQLFeatureNotSupportedException("nullPlusNonNullIsNull")
+    }
+
+    override fun supportsColumnAliasing(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsColumnAliasing")
+    }
+
+    override fun supportsAlterTableWithDropColumn(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsAlterTableWithDropColumn")
+    }
+
+    override fun supportsAlterTableWithAddColumn(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsAlterTableWithAddColumn")
+    }
+
+    override fun getExtraNameCharacters(): String {
+        throw SQLFeatureNotSupportedException("getExtraNameCharacters")
+    }
+
+    override fun getSearchStringEscape(): String {
+        throw SQLFeatureNotSupportedException("getSearchStringEscape")
+    }
+
+    override fun getTimeDateFunctions(): String {
+        throw SQLFeatureNotSupportedException("getTimeDateFunctions")
+    }
+
+    override fun getSystemFunctions(): String {
+        throw SQLFeatureNotSupportedException("getSystemFunctions")
+    }
+
+    override fun getStringFunctions(): String {
+        throw SQLFeatureNotSupportedException("getStringFunctions")
+    }
+
+    override fun getNumericFunctions(): String {
+        throw SQLFeatureNotSupportedException("getNumericFunctions")
+    }
+
+    override fun getSQLKeywords(): String {
+        throw SQLFeatureNotSupportedException("getSQLKeywords")
+    }
+
+    override fun getIdentifierQuoteString(): String {
+        throw SQLFeatureNotSupportedException("getIdentifierQuoteString")
+    }
+
+    override fun storesMixedCaseQuotedIdentifiers(): Boolean {
+        throw SQLFeatureNotSupportedException("storesMixedCaseQuotedIdentifiers")
+    }
+
+    override fun storesLowerCaseQuotedIdentifiers(): Boolean {
+        throw SQLFeatureNotSupportedException("storesLowerCaseQuotedIdentifiers")
+    }
+
+    override fun storesUpperCaseQuotedIdentifiers(): Boolean {
+        throw SQLFeatureNotSupportedException("storesUpperCaseQuotedIdentifiers")
+    }
+
+    override fun supportsMixedCaseQuotedIdentifiers(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsMixedCaseQuotedIdentifiers")
+    }
+
+    override fun storesMixedCaseIdentifiers(): Boolean {
+        throw SQLFeatureNotSupportedException("storesMixedCaseIdentifiers")
+    }
+
+    override fun storesLowerCaseIdentifiers(): Boolean {
+        throw SQLFeatureNotSupportedException("storesLowerCaseIdentifiers")
+    }
+
+    override fun storesUpperCaseIdentifiers(): Boolean {
+        throw SQLFeatureNotSupportedException("storesUpperCaseIdentifiers")
+    }
+
+    override fun supportsMixedCaseIdentifiers(): Boolean {
+        throw SQLFeatureNotSupportedException("supportsMixedCaseIdentifiers")
+    }
+
+    override fun usesLocalFilePerTable(): Boolean {
+        throw SQLFeatureNotSupportedException("usesLocalFilePerTable")
+    }
+
+    override fun usesLocalFiles(): Boolean {
+        throw SQLFeatureNotSupportedException("usesLocalFiles")
+    }
+
+    override fun getDriverVersion(): String {
+        throw SQLFeatureNotSupportedException("getDriverVersion")
+    }
+
+    override fun getDatabaseProductVersion(): String {
+        throw SQLFeatureNotSupportedException("getDatabaseProductVersion")
+    }
+
+    override fun getDatabaseProductName(): String {
+        throw SQLFeatureNotSupportedException("getDatabaseProductName")
+    }
+
+    override fun nullsAreSortedAtEnd(): Boolean {
+        throw SQLFeatureNotSupportedException("nullsAreSortedAtEnd")
+    }
+
+    override fun nullsAreSortedAtStart(): Boolean {
+        throw SQLFeatureNotSupportedException("nullsAreSortedAtStart")
+    }
+
+    override fun nullsAreSortedLow(): Boolean {
+        throw SQLFeatureNotSupportedException("nullsAreSortedLow")
+    }
+
+    override fun nullsAreSortedHigh(): Boolean {
+        throw SQLFeatureNotSupportedException("nullsAreSortedHigh")
+    }
+
+    override fun isReadOnly(): Boolean {
+        throw SQLFeatureNotSupportedException("isReadOnly")
+    }
+
+    override fun getUserName(): String {
+        throw SQLFeatureNotSupportedException("getUserName")
+    }
+
+    override fun getURL(): String {
+        throw SQLFeatureNotSupportedException("getURL")
+    }
+
+    override fun allTablesAreSelectable(): Boolean {
+        throw SQLFeatureNotSupportedException("allTablesAreSelectable")
+    }
+
+    override fun allProceduresAreCallable(): Boolean {
+        throw SQLFeatureNotSupportedException("allProceduresAreCallable")
+    }
+
+    override fun isWrapperFor(iface: Class<*>?): Boolean {
+        throw SQLFeatureNotSupportedException("isWrapperFor")
+    }
+
+    override fun <T : Any?> unwrap(iface: Class<T>?): T {
+        throw SQLFeatureNotSupportedException("unwrap")
+    }
+
+
+}

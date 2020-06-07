@@ -1,0 +1,25 @@
+package {{package}}.util
+
+import {{package}}.DEFAULT_PORT
+import {{package}}.PROP_HOST
+import {{package}}.PROP_PATH
+import {{package}}.PROP_PORT
+import java.net.URI
+import java.util.*
+
+object {{prefix}}DriverUtil {
+    fun parseMergeProperties(url: String, prop: Properties?) = mutableMapOf<String, String>().apply {
+        val uri = URI(url)
+        this[PROP_HOST] = uri.host
+        this[PROP_PORT] = (if (uri.port == -1) DEFAULT_PORT else uri.port).toString()
+        this[PROP_PATH] = uri.path.replaceFirst("/", "")
+        if (uri.query != null) {
+            this += uri.query.split("&").map { p -> p.split("=").let { i -> Pair(i[0], i[1]) } }.toMap()
+        }
+        if (prop != null) {
+            this += prop.map { e -> Pair(e.key.toString(), e.value.toString()) }.toMap()
+        }
+    }.toMap()
+
+
+}

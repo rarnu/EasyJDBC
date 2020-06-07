@@ -1,0 +1,40 @@
+package {{package}}.statement
+
+import {{package}}.{{prefix}}Connection
+import java.sql.ResultSet
+import java.sql.SQLException
+
+abstract class {{prefix}}AbsStatement {
+    internal var isClosed = false
+    internal var connection: {{prefix}}Connection
+    internal lateinit var resultSet: ResultSet
+    protected lateinit var sql: String
+
+    constructor(sql: String, conn: {{prefix}}Connection) {
+        this.sql = sql
+        this.connection = conn
+    }
+    constructor(conn: {{prefix}}Connection) {
+        this.connection = conn
+    }
+
+    open fun executeForResultSet(sql: String): Boolean {
+        if (isClosed) throw SQLException("This statement is closed.")
+        try {
+            resultSet = connection.io.internalExecuteQuery(sql)
+            return true
+        } catch (th: Throwable) {
+            throw SQLException(th)
+        }
+    }
+
+    open fun executeForResult(sql: String): Int {
+        if (isClosed) throw SQLException("This statement is closed.")
+        try {
+            return connection.io.internalExecuteUpdate(sql)
+        } catch (th: Throwable) {
+            throw SQLException(th)
+        }
+    }
+
+}

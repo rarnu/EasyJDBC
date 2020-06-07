@@ -1,0 +1,17 @@
+package {{package}}
+
+const val JDBC_URL = "jdbc:{{jdbc}}:"
+const val MAJOR_VERSION = {{major}}
+const val MINOR_VERSION = {{minor}}
+const val DEFAULT_PORT = {{port}}
+const val DRIVER_NAME = "{{driverName}}"
+
+const val MAX_SIZE = 1024
+
+// 访问服务器的参数
+const val PROP_SCHEMA = "schema"
+const val PROP_HOST = "host"
+const val PROP_PORT = "port"
+const val PROP_PATH = "path"
+const val PROP_USER = "user"
+const val PROP_PASSWORD = "password"
